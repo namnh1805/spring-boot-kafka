@@ -16,18 +16,15 @@ public class StartupListener implements ApplicationRunner {
     private KafkaTemplate<String, String> kafkaTemplate;
 
     public void sendMessage(String msg) {
-        kafkaTemplate.send("test", msg);
+        kafkaTemplate.send("communication.send-email", msg);
     }
 
-    @KafkaListener(topics = "demo", groupId = "group-id")
+    @KafkaListener(topics = "communication.send-email", groupId = "communication.send-email-consumer-group")
     public void listen(String message) {
-        System.out.println("Received Message in group - group-id: " + message);
+        System.out.println("Received Message in topic Test : " + message);
     }
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        for (int i = 0; i < 1000; i++) {
-            sendMessage("Now: " + new Date());
-            Thread.sleep(2000);
-        }
+
     }
 }
